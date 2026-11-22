@@ -1,0 +1,180 @@
+[
+  {
+    "id": "acceptance",
+    "clause": "Closing para",
+    "title": "Signed duplicate appointment letter",
+    "category": "Bank forms",
+    "requirements": "Sign and return the duplicate copy of your appointment letter.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 1
+  },
+  {
+    "id": "medical",
+    "clause": "8a",
+    "title": "Medical fitness certificate and test reports",
+    "category": "Medical",
+    "requirements": "Obtain the certificate from a recognised government or private hospital or practitioner. HR will verify it later. Check the test abbreviations against the original appointment letter.",
+    "needsAttestation": false,
+    "quantity": "Certificate + reports",
+    "order": 2,
+    "checklist": [
+      "CBC",
+      "FBS/RBS",
+      "ECG",
+      "HBsAg",
+      "VDRL",
+      "HIV",
+      "CXR (PA view)",
+      "Blood grouping & Rh typing",
+      "Ophthalmological test",
+      "Urine R/E",
+      "Dope test",
+      "Final certificate from hospital or doctor"
+    ]
+  },
+  {
+    "id": "service-sheet",
+    "clause": "8b",
+    "title": "Bank service sheet",
+    "category": "Bank forms",
+    "requirements": "Fill in and sign the prescribed service sheet provided by the Bank.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 3
+  },
+  {
+    "id": "fidelity-bond",
+    "clause": "8c",
+    "title": "Declaration of fidelity and secrecy",
+    "category": "Bank forms",
+    "requirements": "Sign the fidelity and secrecy bond on the form provided by the Bank.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 4
+  },
+  {
+    "id": "nationality",
+    "clause": "8d",
+    "title": "Nationality certificate",
+    "category": "Identity",
+    "requirements": "Obtain the certificate from a UP Chairman, Mayor of a Pourashava, or Ward Councillor of a City Corporation.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 5
+  },
+  {
+    "id": "nid-copy",
+    "clause": "8d",
+    "title": "Attested photocopy of National ID card",
+    "category": "Identity",
+    "requirements": "Bring an attested photocopy of your National ID card.",
+    "needsAttestation": true,
+    "quantity": "1",
+    "order": 6
+  },
+  {
+    "id": "genuineness",
+    "clause": "8e",
+    "title": "Declaration of academic certificate genuineness",
+    "category": "Bank forms",
+    "requirements": "Complete the form provided by the Bank. A false certificate is grounds for termination.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 7
+  },
+  {
+    "id": "undertaking",
+    "clause": "8f",
+    "title": "Undertaking to serve at any branch or office",
+    "category": "Bank forms",
+    "requirements": "Complete the undertaking on the form provided by the Bank.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 8
+  },
+  {
+    "id": "char-cert-1",
+    "clause": "8g",
+    "title": "Character and antecedent certificate #1",
+    "category": "Certificates",
+    "requirements": "Get a certificate from a Class-I government official or a banker of AGM rank or above. The signer must not be a relative.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 9
+  },
+  {
+    "id": "char-cert-2",
+    "clause": "8g",
+    "title": "Character and antecedent certificate #2",
+    "category": "Certificates",
+    "requirements": "Use a different signer from certificate #1. The same rank and non-relative requirements apply.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 10
+  },
+  {
+    "id": "surety-bond",
+    "clause": "8h",
+    "title": "Surety bond on Tk 300 stamp paper",
+    "category": "Legal",
+    "requirements": "Use the prescribed proforma and Tk 300 non-judicial stamp paper. The bond covers at least five years of service from joining.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 11
+  },
+  {
+    "id": "photos",
+    "clause": "8i",
+    "title": "Attested passport-size colour photographs",
+    "category": "Identity",
+    "requirements": "Bring four recent lab-printed photos attested by a Class-I government official or a banker of AGM rank or above.",
+    "needsAttestation": true,
+    "quantity": "4 photos",
+    "order": 12
+  },
+  {
+    "id": "academic-originals",
+    "clause": "9",
+    "title": "Original academic certificates",
+    "category": "Academic",
+    "requirements": "Bring all original academic certificates on joining day. The Bank will return them after verification.",
+    "needsAttestation": false,
+    "quantity": "All originals",
+    "order": 13,
+    "checklist": [
+      "SSC",
+      "HSC",
+      "Bachelor’s",
+      "Master’s (if applicable)",
+      "Transcripts"
+    ]
+  },
+  {
+    "id": "academic-copies",
+    "clause": "9",
+    "title": "Attested copies of academic certificates",
+    "category": "Academic",
+    "requirements": "Bring two complete sets of attested photocopies of your academic certificates.",
+    "needsAttestation": true,
+    "quantity": "2 sets",
+    "order": 14,
+    "checklist": [
+      "SSC",
+      "HSC",
+      "Bachelor’s",
+      "Master’s (if applicable)",
+      "Transcripts"
+    ]
+  },
+  {
+    "id": "release-order",
+    "clause": "10",
+    "title": "Release order from previous employer",
+    "category": "Employment",
+    "requirements": "The release order must mention any liabilities with your previous organisation.",
+    "needsAttestation": false,
+    "quantity": "1",
+    "order": 15
+  }
+]
