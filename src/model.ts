@@ -20,6 +20,10 @@ export const labels = {
   ready: 'Ready',
 } as const
 export type Status = keyof typeof labels
+export type BankReceipt = 'awaiting' | 'received'
+const bankFormIds = new Set(
+  documents.filter((d) => d.bankProvided).map((d) => d.id),
+)
 export const statuses = Object.keys(labels) as Status[]
 export interface SubItem {
   id: string
@@ -35,6 +39,7 @@ export interface DocItem {
   quantity?: string
   needsAttestation: boolean
   status: Status
+  bankReceipt: BankReceipt | null
   blocked: boolean
   blockedReason?: string
   dueDate?: string
@@ -60,10 +65,11 @@ export function initialState(): AppState {
     version: 1,
     joiningDate,
     createdAt: now,
-    items: documents.map(({ checklist, ...doc }) => ({
+    items: documents.map(({ checklist, bankProvided, ...doc }) => ({
       ...doc,
       category: doc.category as Category,
       status: 'not_started',
+      bankReceipt: bankProvided ? 'awaiting' : null,
       blocked: false,
       updatedAt: now,
       ...(checklist && {
@@ -89,6 +95,17 @@ export function overall(items: DocItem[]) {
         (100 * items.reduce((sum, d) => sum + progress(d), 0)) / items.length,
       )
     : 0
+}
+export function trackerGroups(items: DocItem[]) {
+  const personal = items.filter((d) => d.bankReceipt === null)
+  const bank = items.filter((d) => d.bankReceipt !== null)
+  const received = bank.filter((d) => d.bankReceipt === 'received').length
+  return {
+    personal,
+    bank,
+    received,
+    bankPercent: bank.length ? Math.round((100 * received) / bank.length) : 0,
+  }
 }
 export function needsStamp(d: DocItem) {
   return d.needsAttestation && d.status !== 'attested' && d.status !== 'ready'
@@ -149,6 +166,9 @@ function validItem(value: unknown) {
     typeof d.requirements === 'string' &&
     typeof d.needsAttestation === 'boolean' &&
     pipeline(d.needsAttestation).includes(d.status as Status) &&
+    (d.bankReceipt == null ||
+      d.bankReceipt === 'awaiting' ||
+      d.bankReceipt === 'received') &&
     typeof d.blocked === 'boolean' &&
     Number.isFinite(d.order) &&
     timestamp(d.updatedAt) &&
@@ -193,5 +213,16 @@ export function parseBackup(raw: string): AppState {
     throw new Error(
       'This file is not a valid version 1 tracker backup. Your tracker has been kept as it was.',
     )
-  return data as unknown as AppState
+  const state = data as unknown as AppState
+  for (const doc of state.items) {
+    if (doc.bankReceipt !== undefined) continue
+    // Older trackers recorded preparation only. A prepared form was already in hand.
+    const inHand = ['prepared', 'attested', 'ready'].includes(doc.status)
+    doc.bankReceipt = bankFormIds.has(doc.id)
+      ? inHand
+        ? 'received'
+        : 'awaiting'
+      : null
+  }
+  return state
 }

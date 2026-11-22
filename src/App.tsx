@@ -34,6 +34,7 @@ import {
   initialState,
   key,
   parseBackup,
+  type BankReceipt,
   type AppState,
   type DocItem,
 } from './model'
@@ -132,7 +133,7 @@ function App() {
       return false
     }
   }
-  function add() {
+  function add(bankProvided: boolean) {
     setEditing({
       isNew: true,
       doc: {
@@ -142,6 +143,7 @@ function App() {
         requirements: '',
         needsAttestation: false,
         status: 'not_started',
+        bankReceipt: bankProvided ? 'awaiting' : null,
         blocked: false,
         isCustom: true,
         order: Math.max(0, ...data.items.map((d) => d.order)) + 1,
@@ -151,6 +153,16 @@ function App() {
   }
   function edit(doc: DocItem) {
     setEditing({ doc, isNew: false })
+  }
+  function setBankReceipt(id: string, bankReceipt: BankReceipt) {
+    save({
+      ...data,
+      items: data.items.map((doc) =>
+        doc.id === id
+          ? { ...doc, bankReceipt, updatedAt: new Date().toISOString() }
+          : doc,
+      ),
+    })
   }
   function exportData() {
     const stamp = new Date().toISOString()
@@ -276,6 +288,7 @@ function App() {
             items={data.items}
             onEdit={edit}
             onAdd={add}
+            onBankReceipt={setBankReceipt}
             print={() => go('/print')}
             now={now}
           />

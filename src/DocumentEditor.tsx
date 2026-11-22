@@ -98,6 +98,16 @@ export function DocumentEditor({
               <label className="check">
                 <input
                   type="checkbox"
+                  checked={draft.bankReceipt !== null}
+                  onChange={(e) =>
+                    patch('bankReceipt', e.target.checked ? 'awaiting' : null)
+                  }
+                />
+                Form provided by the bank
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
                   checked={draft.needsAttestation}
                   onChange={(e) =>
                     setDraft({
@@ -143,8 +153,25 @@ export function DocumentEditor({
               </div>
             </div>
           )}
+          {draft.bankReceipt !== null && (
+            <label>
+              Bank form receipt
+              <select
+                value={draft.bankReceipt}
+                onChange={(e) =>
+                  patch(
+                    'bankReceipt',
+                    e.target.value === 'received' ? 'received' : 'awaiting',
+                  )
+                }
+              >
+                <option value="awaiting">Awaiting form</option>
+                <option value="received">Received</option>
+              </select>
+            </label>
+          )}
           <fieldset>
-            <legend>Status</legend>
+            <legend>Preparation status</legend>
             <div className="stepper">
               {pipeline(draft.needsAttestation).map((s, i) => {
                 const active = s === draft.status

@@ -446,15 +446,64 @@ footer {
   background: linear-gradient(120deg, white 47%, var(--metric-tint, white));
   box-shadow: 0 2px 6px #243e2a08;
 }
-.progress-card {
-  background: #e6f1e4;
-  border-color: #c3d7be;
+.tracker-switch {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 18px 0;
 }
-.progress-card .metric-icon {
+.tracker-choice {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  row-gap: 8px;
+}
+.tracker-choice > strong {
+  margin: 0;
+  grid-column: 2;
+  grid-row: 1 / 3;
+}
+.tracker-choice .metric-foot { grid-column: 1 }
+.tracker-choice[aria-pressed='true'] {
+  background: #e6f1e4;
+  border-color: #67916d;
+  box-shadow: inset 0 -3px #518160;
+}
+.tracker-choice[aria-pressed='true'] .metric-icon {
   background: #2e6046;
   color: #fff;
 }
-.progress-card .progress { background: #c4d7c0 }
+.tracker-choice[aria-pressed='true'] .progress { background: #c4d7c0 }
+.metrics.personal-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)) }
+.bank-register { overflow: hidden }
+.bank-hint { margin: 0 21px 15px; font-size: 14px; color: var(--muted) }
+.bank-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 13px 21px;
+  border-top: 1px solid var(--line);
+}
+.bank-document { display: flex; align-items: center; gap: 10px; text-align: left; min-width: 0 }
+.bank-document strong, .bank-document small { display: block; overflow-wrap: anywhere }
+.bank-document strong { font-size: 15px }
+.bank-document small { font-size: 13px; color: var(--muted); margin-top: 3px }
+.bank-document:hover strong { text-decoration: underline }
+.receipt-check { display: inline-flex; align-items: center; gap: 7px; font-size: 14px; cursor: pointer; flex-shrink: 0; min-height: 36px }
+.receipt-check input { width: 17px; height: 17px; accent-color: var(--green) }
+@media (max-width: 620px) {
+  .tracker-switch { gap: 8px; margin: 12px 0 }
+  .tracker-choice { display: flex; align-items: stretch }
+  .metrics.personal-metrics { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 6px }
+  .personal-metrics .metric { padding: 10px }
+  .personal-metrics .metric-top { flex-direction: column; align-items: flex-start; gap: 4px }
+  .personal-metrics .metric-caption { display: none }
+  .bank-hint { margin-inline: 12px }
+  .bank-row { flex-wrap: wrap; padding: 10px 12px; gap: 3px }
+  .bank-document { width: 100% }
+  .receipt-check { margin-left: 39px }
+}
 .metric-ochre { --metric-tint: #faf3e2 }
 .metric-rose { --metric-tint: #fbefef }
 .metric-clay { --metric-tint: #fcf2e9 }

@@ -2,6 +2,8 @@
 
 A browser-local checklist for joining Pubali Bank PLC. It tracks document status, attestation, deadlines and notes, and includes a printable joining-day checklist.
 
+Choose **My documents** to track readiness for paperwork you source yourself. Choose **Bank-provided forms** to record which blank forms have arrived. Open a bank form to track filling and signing it. Both groups appear on the final print checklist. Use **Edit document details → Form provided by the bank** to change a document’s group.
+
 ## Run locally
 
 Use Node.js 24 and npm. From the repository root, run:

@@ -4,6 +4,7 @@ import {
   initialState,
   pipeline,
   overall,
+  trackerGroups,
   progress,
   batch,
   parseBackup,
@@ -17,6 +18,39 @@ test('seed list, checklists and eligibility match the letter plan', () => {
   assert.equal(items.filter((d) => d.needsAttestation).length, 3)
   assert.equal(items.find((d) => d.id === 'medical').subItems.length, 12)
   assert.equal(pipeline(false).includes('attested'), false)
+})
+test('personal readiness and bank receipt have independent denominators', () => {
+  const { items } = initialState()
+  const { personal, bank } = trackerGroups(items)
+  assert.equal(personal.length, 10)
+  assert.equal(bank.length, 5)
+  personal.forEach((doc) => (doc.status = 'ready'))
+  assert.equal(overall(personal), 100)
+  assert.equal(trackerGroups(items).bankPercent, 0)
+  bank[0].bankReceipt = 'received'
+  assert.equal(trackerGroups(items).bankPercent, 20)
+  assert.equal(bank[0].status, 'not_started')
+  bank[0].bankReceipt = null
+  assert.equal(trackerGroups(items).personal.length, 11)
+  assert.equal(trackerGroups(items).received, 0)
+  for (const doc of items) doc.bankReceipt = null
+  assert.equal(trackerGroups(items).bankPercent, 0)
+})
+test('old backups keep preparation and gain receipt defaults only for known bank forms', () => {
+  const old = initialState()
+  const service = old.items.find((d) => d.id === 'service-sheet')
+  Object.assign(service, { status: 'prepared', notes: 'Signed copy in folder' })
+  old.items.push({ ...service, id: 'custom-form', isCustom: true })
+  old.items.forEach((d) => delete d.bankReceipt)
+  const migrated = parseBackup(JSON.stringify(old))
+  const restored = migrated.items.find((d) => d.id === service.id)
+  assert.deepEqual(restored, { ...service, bankReceipt: 'received' })
+  assert.equal(migrated.items.at(-1).bankReceipt, null)
+  assert.equal(trackerGroups(migrated.items).received, 1)
+  restored.bankReceipt = null
+  assert.deepEqual(parseBackup(JSON.stringify(migrated)), migrated)
+  restored.bankReceipt = 'invalid'
+  assert.throws(() => parseBackup(JSON.stringify(migrated)))
 })
 test('applicable steps and mean progress', () => {
   const [a] = initialState().items
