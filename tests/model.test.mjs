@@ -22,16 +22,16 @@ test('seed list, checklists and eligibility match the letter plan', () => {
 test('personal readiness and bank receipt have independent denominators', () => {
   const { items } = initialState()
   const { personal, bank } = trackerGroups(items)
-  assert.equal(personal.length, 10)
-  assert.equal(bank.length, 5)
+  assert.equal(personal.length, 11)
+  assert.equal(bank.length, 4)
   personal.forEach((doc) => (doc.status = 'ready'))
   assert.equal(overall(personal), 100)
   assert.equal(trackerGroups(items).bankPercent, 0)
   bank[0].bankReceipt = 'received'
-  assert.equal(trackerGroups(items).bankPercent, 20)
+  assert.equal(trackerGroups(items).bankPercent, 25)
   assert.equal(bank[0].status, 'not_started')
   bank[0].bankReceipt = null
-  assert.equal(trackerGroups(items).personal.length, 11)
+  assert.equal(trackerGroups(items).personal.length, 12)
   assert.equal(trackerGroups(items).received, 0)
   for (const doc of items) doc.bankReceipt = null
   assert.equal(trackerGroups(items).bankPercent, 0)
@@ -51,6 +51,30 @@ test('old backups keep preparation and gain receipt defaults only for known bank
   assert.deepEqual(parseBackup(JSON.stringify(migrated)), migrated)
   restored.bankReceipt = 'invalid'
   assert.throws(() => parseBackup(JSON.stringify(migrated)))
+})
+test('older surety bonds move to personal printing while retaining saved preparation', () => {
+  const state = initialState()
+  const original = state.items.find(d => d.id === 'surety-bond')
+  assert.equal(original.bankReceipt, null)
+  assert.equal(original.quantity, '3 sheets × Tk 100')
+  assert.match(original.requirements, /one page per sheet \(Tk 300 total\)/)
+  for (const receipt of [undefined, 'awaiting', 'received', null]) {
+    const old = structuredClone(state)
+    const bond = old.items.find(d => d.id === original.id)
+    Object.assign(bond, {
+      title: receipt === null ? 'My renamed bond' : 'Surety bond on Tk 300 stamp paper',
+      requirements: 'Use the prescribed proforma and Tk 300 non-judicial stamp paper. The bond covers at least five years of service from joining.',
+      quantity: '1', bankReceipt: receipt, status: 'in_progress', notes: 'Print on Monday',
+    })
+    const updated = parseBackup(JSON.stringify(old))
+    const migrated = updated.items.find(d => d.id === bond.id)
+    assert.deepEqual(migrated, {
+      ...original, title: receipt === null ? bond.title : original.title,
+      notes: bond.notes, status: bond.status,
+    })
+    migrated.bankReceipt = 'received'
+    assert.deepEqual(parseBackup(JSON.stringify(updated)), updated)
+  }
 })
 test('applicable steps and mean progress', () => {
   const [a] = initialState().items

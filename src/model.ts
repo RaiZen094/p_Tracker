@@ -214,6 +214,15 @@ export function parseBackup(raw: string): AppState {
       'This file is not a valid version 1 tracker backup. Your tracker has been kept as it was.',
     )
   const state = data as unknown as AppState
+  // The old read-only requirement identifies trackers created before the bank clarified printing.
+  const bond = state.items.find((d) => d.id === 'surety-bond')!
+  const bondSeed = documents.find((d) => d.id === 'surety-bond')!
+  if (bond.requirements !== bondSeed.requirements) {
+    bond.bankReceipt = null
+    bond.requirements = bondSeed.requirements
+    bond.quantity = bondSeed.quantity
+    if (bond.title === 'Surety bond on Tk 300 stamp paper') bond.title = bondSeed.title
+  }
   for (const doc of state.items) {
     if (doc.bankReceipt !== undefined) continue
     // Older trackers recorded preparation only. A prepared form was already in hand.

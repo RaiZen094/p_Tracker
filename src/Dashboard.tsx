@@ -298,12 +298,7 @@ export function Dashboard({
                 <CategoryIcon category={doc.category} />
                 <span>
                   <strong>{doc.title}</strong>
-                  <small>
-                    {doc.id === 'surety-bond'
-                      ? 'Bank supplies the proforma · '
-                      : ''}
-                    Preparation · {labels[doc.status]}
-                  </small>
+                  <small>Preparation · {labels[doc.status]}</small>
                 </span>
               </button>
               <label className="receipt-check">

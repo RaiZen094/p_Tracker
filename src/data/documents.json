@@ -119,13 +119,12 @@
   },
   {
     "id": "surety-bond",
-    "bankProvided": true,
     "clause": "8h",
-    "title": "Surety bond on Tk 300 stamp paper",
+    "title": "Print the three-page surety bond",
     "category": "Legal",
-    "requirements": "Use the prescribed proforma and Tk 300 non-judicial stamp paper. The bond covers at least five years of service from joining.",
+    "requirements": "The bank has already supplied the surety bond. Print its three pages on three separate sheets of Tk 100 non-judicial stamp paper, one page per sheet (Tk 300 total). The bond covers at least five years of service from joining.",
     "needsAttestation": false,
-    "quantity": "1",
+    "quantity": "3 sheets × Tk 100",
     "order": 11
   },
   {
